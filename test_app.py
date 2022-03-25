@@ -1,5 +1,6 @@
 from unittest import TestCase
 
+
 from app import app, games
 
 # Make Flask errors be real errors, not HTML pages with error info
@@ -46,3 +47,49 @@ class BoggleAppTestCase(TestCase):
             breakpoint()
             #the route stores the new game in the games dictionary
             self.assertIn(game_id,games)
+
+
+    def test_score_word(self):
+        """Test scoring word."""
+
+        with self.client as client:
+            response = client.post('/api/new-game')
+            json_response = response.get_json()
+
+            game_id = json_response["gameId"]
+            game = games[game_id]
+            game.board = [
+                    ['E', 'I', 'A', 'N', 'K'],
+                    ['G', 'L', 'S', 'N', 'I'],
+                    ['O', 'N', 'M', 'T', 'J'],
+                    ['C', 'B', 'O', 'O', 'Y'],
+                    ['O', 'E', 'V', 'E', 'F']
+                ]
+            #Test valid word
+            response = client.post("/api/score-word", json={
+                "gameId" : game_id,
+                "word-input": "MOVE"})
+
+            json_response = response.get_json()
+
+            self.assertEqual({"result":"ok"}, json_response)
+
+            #Test invalid word
+            response = client.post("/api/score-word", json={
+                "gameId" : game_id,
+                "word-input": "ZZZZ"})
+
+            json_response = response.get_json()
+
+            self.assertEqual({"result":"not-word"}, json_response)
+
+            #Test word not on board
+            response = client.post("/api/score-word", json={
+                "gameId" : game_id,
+                "word-input": "TIGER"})
+
+            json_response = response.get_json()
+
+            self.assertEqual({"result":"not-on-board"}, json_response)
+
+
