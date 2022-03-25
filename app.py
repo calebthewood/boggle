@@ -29,7 +29,7 @@ def new_game():
     game = BoggleGame()
     games[game_id] = game
 
-    return {"gameId": game_id, "board": game.board}
+    return jsonify({"gameId": game_id, "board": game.board})
 
 @app.post("/api/score-word")
 def score_word():
@@ -45,9 +45,9 @@ def score_word():
     print("game instance...",game_instance)
 
     if game_instance.is_word_in_word_list(word_input) is False:
-        return {"result":"not-word"}
+        return jsonify({"result":"not-word"})
     if game_instance.check_word_on_board(word_input) is False:
-        return{"result":"not-on-board"}
-    return {"result":"ok"}
+        return jsonify({"result":"not-on-board"})
+    return jsonify({"result":"ok"})
 
 
