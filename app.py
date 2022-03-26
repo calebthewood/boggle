@@ -11,8 +11,6 @@ app.config["SECRET_KEY"] = "this-is-secret"
 # The boggle games created, keyed by game id
 games = {}
 
-#c8dafb35-17f4-42d8-bf5a-92fb764a6063
-
 @app.get("/")
 def homepage():
     """Show board."""
@@ -37,12 +35,9 @@ def score_word():
 
     response = request.json
     word_input = response["word-input"]
-    print("word_input..",word_input)
     game_id = response["gameId"]
 
-    print("response...",response)
     game_instance = games[game_id]
-    print("game instance...",game_instance)
 
     if game_instance.is_word_in_word_list(word_input) is False:
         return jsonify({"result":"not-word"})

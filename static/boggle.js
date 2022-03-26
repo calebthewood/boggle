@@ -16,6 +16,13 @@ async function start() {
   gameId = response.data.gameId;
   let board = response.data.board;
 
+  //board.length = rows
+  //board[0].length = columns
+    //loop over board
+      //content: the letter, attribute for x-y location,
+
+
+
   displayBoard(board);
 }
 
@@ -23,7 +30,18 @@ async function start() {
 
 function displayBoard(board) {
   // $table.empty();
+  //board will nested array
   // loop over board and create the DOM tr/td structure
+
+}
+
+/**
+ * Checks word if word is valid. Returns Confirmation Message from API.
+ */
+async function checkWord() {
+  const response = await axios.post("/api/score-word");
+  const responseMsg = response.data.result;
+
 }
 
 
